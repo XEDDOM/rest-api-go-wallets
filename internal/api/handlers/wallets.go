@@ -31,4 +31,15 @@ func (h WalletHandler) GetOneWalletHandler(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-// TODO: Method POST
+func (h WalletHandler) UpdateWalletHandler(w http.ResponseWriter, r *http.Request) {
+	var updates map[string]any
+	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+	if err := h.Repo.UpdateWallet(updates); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
