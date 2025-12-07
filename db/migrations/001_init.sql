@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS wallets (
+    valletid SERIAL PRIMARY KEY,
+    amount INTEGER NOT NULL
+);
