@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:18
+    container_name: bank_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: bank
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: bank_api
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: 123
+      DB_NAME: bank
+      DB_PORT: 5432
+      HOST: db
+      API_PORT: 3000
+    env_file:
+      - cmd/api/config.env
+
+volumes:
+  pgdata:
