@@ -12,6 +12,6 @@ func WalletRouter() *http.ServeMux {
 		Repo: sqlconnect.SQLWalletRepo{},
 	}
 	mux.HandleFunc("GET /api/v1/wallets/{WALLET_UUID}", h.GetOneWalletHandler)
-	// TODO: Method POST
+	mux.HandleFunc("POST /api/v1/wallet", h.UpdateWalletHandler)
 	return mux
 }
