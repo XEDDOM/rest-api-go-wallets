@@ -18,7 +18,7 @@ func (h WalletHandler) GetOneWalletHandler(w http.ResponseWriter, r *http.Reques
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-	wallet, err := h.Repo.GetWalletByID(id) // TODO: CRUD for wallets GET
+	wallet, err := h.Repo.GetWalletByID(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
